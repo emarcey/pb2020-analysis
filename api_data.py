@@ -44,14 +44,14 @@ def get_cities_by_pop():
     return city_pop_dict
 
 
-def build_final_output(incident_counter, city_pop_dict):
+def build_final_output(incident_counter, city_pop_dict, min_incidents, min_population):
     output_list = []
     for city_state_key, num_incidents in dict(incident_counter).items():
         if "Unknown" in city_state_key:
             continue
         city_population = city_pop_dict[city_state_key]
         state, city = get_city_state_from_key(city_state_key)
-        if city_population < 100000 or num_incidents < 5:
+        if city_population < min_population or num_incidents < min_incidents:
             continue
         output_list.append(
             {
@@ -65,7 +65,7 @@ def build_final_output(incident_counter, city_pop_dict):
     return sorted(output_list, key=lambda x: x["Incidents per 100k residents"], reverse=True)
 
 
-def main():
+def main(min_incidents: int = 10, min_population: int = 100000):
     incidents = get_incidents()
 
     print(len(incidents))
@@ -75,7 +75,7 @@ def main():
     print(incident_counter.most_common(10))
 
     city_pop_dict = get_cities_by_pop()
-    final_dict = build_final_output(incident_counter, city_pop_dict)
+    final_dict = build_final_output(incident_counter, city_pop_dict, min_incidents, min_population)
     print(final_dict)
     print(len(final_dict))
 
