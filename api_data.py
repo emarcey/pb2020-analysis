@@ -55,8 +55,8 @@ def build_final_output(incident_counter, city_pop_dict, min_incidents, min_popul
             continue
         output_list.append(
             {
-                "State": state,
                 "City": city,
+                "State": state,
                 "Incidents": num_incidents,
                 "Population": city_population,
                 "Incidents per 100k residents": round(num_incidents / (city_population / 100000), 5),
