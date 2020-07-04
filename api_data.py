@@ -50,7 +50,7 @@ def build_final_output(incident_counter, city_pop_dict, min_incidents, min_popul
         if "Unknown" in city_state_key:
             continue
         city_population = city_pop_dict[city_state_key]
-        state, city = get_city_state_from_key(city_state_key)
+        city, state = get_city_state_from_key(city_state_key)
         if city_population < min_population or num_incidents < min_incidents:
             continue
         output_list.append(
