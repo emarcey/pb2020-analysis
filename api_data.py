@@ -39,7 +39,7 @@ def get_cities_by_pop():
             if i == 0:
                 i += 1
                 continue
-            city_pop_dict[make_city_state_key(row[2], row[1])] = int(row[3])
+            city_pop_dict[make_city_state_key(row[0], row[1])] = int(row[2])
 
     return city_pop_dict
 
@@ -47,11 +47,11 @@ def get_cities_by_pop():
 def build_final_output(incident_counter, city_pop_dict, min_incidents, min_population):
     output_list = []
     for city_state_key, num_incidents in dict(incident_counter).items():
-        if "Unknown" in city_state_key:
+        if "Unknown" in city_state_key or num_incidents < min_incidents:
             continue
         city_population = city_pop_dict[city_state_key]
         city, state = get_city_state_from_key(city_state_key)
-        if city_population < min_population or num_incidents < min_incidents:
+        if city_population < min_population:
             continue
         output_list.append(
             {
