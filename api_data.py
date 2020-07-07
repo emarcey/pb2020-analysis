@@ -1,8 +1,10 @@
+import argparse
 import csv
 from collections import Counter
 import requests
+from typing import Any, Dict, List, Tuple
 
-API_URL = "https://api.846policebrutality.com/api/incidents"
+API_URL = "https://raw.githubusercontent.com/2020PB/police-brutality/data_build/all-locations-v2.json"
 
 DELIM = "||--||"
 
@@ -11,27 +13,66 @@ CITY_POP_FILE = "city_pop.csv"
 OUTPUT_FILE = "incidents_per_100k.csv"
 
 
-def make_city_state_key(city, state):
+def init_argparse() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Run analysis on 846 police brutality data.")
+    parser.add_argument(
+        "--min_incidents", type=int, default=10, help="minimum number of incidents for a city to be analyzed"
+    )
+    parser.add_argument(
+        "--min_population",
+        type=int,
+        default=100000,
+        help="minimum population for a city to be analyzed (city proper, not metro)",
+    )
+
+    return parser
+
+
+def make_city_state_key(city: str, state: str) -> str:
     return f"{state}{DELIM}{city}"
 
 
-def get_city_state_from_key(city_state_key):
+def get_city_state_from_key(city_state_key: str) -> Tuple[str, str]:
     vals = city_state_key.split(DELIM)
     return vals[0], vals[1]
 
 
-def get_incidents():
+def get_incidents() -> Dict[str, Any]:
     resp = requests.get(API_URL)
     data = resp.json()["data"]
 
     for item in data:
+        # These all share a PD
         if item["city"] in {"Hollywood", "Compton", "Huntington Beach"}:
             item["city"] = "Los Angeles"
     return data
 
 
-def get_cities_by_pop():
-    city_pop_dict = {}
+def write_output_file(final_dict: List[Dict[str, Any]], num_incidents: int, min_population: int) -> None:
+    filename = f"incidents_per_100k_min_{num_incidents}_incidents_min_{min_population}_pop.csv"
+
+    print(f"Writing results to {filename}")
+
+    with open(filename, "w") as csvfile:
+        writer = csv.DictWriter(
+            csvfile,
+            fieldnames=[
+                "State",
+                "City",
+                "Incidents",
+                "Population",
+                "Metro Population",
+                "Incidents per 100k residents",
+                "Incidents per 100k metro residents",
+            ],
+        )
+        writer.writeheader()
+        for row in final_dict:
+            writer.writerow(row)
+
+
+def get_cities_by_pop() -> Dict[str, Tuple[int, int]]:
+    city_pop_dict: Dict[str, Tuple[int, int]] = {}
     i = 0
     with open(CITY_POP_FILE) as citypopcsv:
         csvreader = csv.reader(citypopcsv)
@@ -39,17 +80,25 @@ def get_cities_by_pop():
             if i == 0:
                 i += 1
                 continue
-            city_pop_dict[make_city_state_key(row[0], row[1])] = int(row[2])
+            city_pop_dict[make_city_state_key(row[0], row[1])] = (int(row[2]), int(row[3]))
 
     return city_pop_dict
 
 
-def build_final_output(incident_counter, city_pop_dict, min_incidents, min_population):
+def build_final_output(
+    incident_counter: Counter, city_pop_dict: Dict[str, Tuple[int, int]], min_incidents: int, min_population: int
+) -> List[Dict[str, Any]]:
     output_list = []
+    i = 0
+    for city_state_key, num_incidents in dict(incident_counter).items():
+        if num_incidents >= min_incidents:
+            i += 1
+
+    print(f"Num with enough incidents: {i}")
     for city_state_key, num_incidents in dict(incident_counter).items():
         if "Unknown" in city_state_key or num_incidents < min_incidents:
             continue
-        city_population = city_pop_dict[city_state_key]
+        city_population, city_metro_population = city_pop_dict[city_state_key]
         city, state = get_city_state_from_key(city_state_key)
         if city_population < min_population:
             continue
@@ -59,34 +108,28 @@ def build_final_output(incident_counter, city_pop_dict, min_incidents, min_popul
                 "State": state,
                 "Incidents": num_incidents,
                 "Population": city_population,
+                "Metro Population": city_metro_population,
                 "Incidents per 100k residents": round(num_incidents / (city_population / 100000), 5),
+                "Incidents per 100k metro residents": round(num_incidents / (city_metro_population / 100000), 5),
             }
         )
-    return sorted(output_list, key=lambda x: x["Incidents per 100k residents"], reverse=True)
+    return sorted(output_list, key=lambda x: x["Incidents"], reverse=True)
 
 
-def main(min_incidents: int = 10, min_population: int = 100000):
+def main(min_incidents: int, min_population: int) -> None:
     incidents = get_incidents()
 
-    print(len(incidents))
+    print(f"Found {len(incidents)} total incidents.")
 
     incident_counter = Counter([make_city_state_key(incident["state"], incident["city"]) for incident in incidents])
 
-    print(incident_counter.most_common(10))
-
     city_pop_dict = get_cities_by_pop()
     final_dict = build_final_output(incident_counter, city_pop_dict, min_incidents, min_population)
-    print(final_dict)
-    print(len(final_dict))
 
-    with open(OUTPUT_FILE, "w") as csvfile:
-        writer = csv.DictWriter(
-            csvfile, fieldnames=["State", "City", "Incidents", "Population", "Incidents per 100k residents"]
-        )
-        writer.writeheader()
-        for data in final_dict:
-            writer.writerow(data)
+    write_output_file(final_dict, min_incidents, min_population)
 
 
 if __name__ == "__main__":
-    main()
+    parser = init_argparse()
+    args = parser.parse_args()
+    main(args.min_incidents, args.min_population)

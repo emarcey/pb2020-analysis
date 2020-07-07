@@ -1,14 +1,34 @@
-state,city,population
-Oregon,Portland,653115
-Minnesota,Minneapolis,425403
-Virginia,Richmond,227032
-Washington DC,DC,705749
-Washington,Seattle,744955
-Colorado,Denver,619968
-Ohio,Columbus,892533
-Kentucky,Louisville,766757
-Texas,Austin,964254
-California,Los Angeles,3990000
-Pennsylvania,Philadelphia,1584000
-New York,New York City,8399000
-Illinois,Chicago,2706000
+state,city,population,metro_population
+Oregon,Portland,653115,2478810
+Minnesota,Minneapolis,425403,3629190
+Virginia,Richmond,227032,1263617
+Washington DC,DC,705749,6216589
+Washington,Seattle,744955,3979845
+Colorado,Denver,619968,2932415
+Ohio,Columbus,892533,2078725
+Kentucky,Louisville,766757,1265108
+Texas,Austin,964254,2227083
+California,Los Angeles,3990000,13131431
+Pennsylvania,Philadelphia,1584000,6096120
+New York,New York City,8399000,20399000
+Illinois,Chicago,2706000,9533040
+Iowa,Des Moines,216853,655409
+Arizona,Phoenix,1660000,4857962
+California,San Jose,1003000,1998463
+Indiana,Fort Wayne,267633,419453
+Michigan,Detroit,672662,4292060
+Florida,Tampa,392890,3068511
+North Carolina,Raleigh,469298,1210000
+Nevada,Las Vegas,644644,2227053
+Alabama,Huntsville,197318,462693
+Texas,Dallas,1345000,7233323
+Florida,Orlando,285713,2509454
+Missouri,Kansas City,491918,2143651
+Georgia,Atlanta,498044,6020864
+Ohio,Cincinnati,302605,2137406
+Tennessee,Murfreesboro,146900,350000
+California,San Diego,1426000,3317749
+Pennsylvania,Pittsburgh,301048,2362453
+Massachusetts,Worcester,185877,923672
+Utah,Salt Lake City,200591,1222540
+Texas,Houston,2326000,6997384
