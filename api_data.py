@@ -38,7 +38,7 @@ def get_city_state_from_key(city_state_key: str) -> Tuple[str, str]:
 
 
 def get_incidents() -> Dict[str, Any]:
-    resp = requests.get(API_URL)
+    resp = requests.get(API_URL, headers={"Cache-Control": "no-cache"})
     data = resp.json()["data"]
 
     for item in data:
