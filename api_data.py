@@ -42,8 +42,7 @@ def get_incidents() -> Dict[str, Any]:
     data = resp.json()["data"]
 
     for item in data:
-        # These all share a PD
-        if item["city"] in {"Hollywood", "Compton", "Huntington Beach"}:
+        if item["city"] in {"Hollywood", "Compton"}:
             item["city"] = "Los Angeles"
     return data
 
