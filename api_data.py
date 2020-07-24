@@ -24,6 +24,7 @@ def init_argparse() -> argparse.ArgumentParser:
         default=100000,
         help="minimum population for a city to be analyzed (city proper, not metro)",
     )
+    parser.add_argument("--city", type=str, default="Portland", help="city to use for by date analysis")
 
     return parser
 
@@ -45,6 +46,31 @@ def get_incidents() -> Dict[str, Any]:
         if item["city"] in {"Hollywood", "Compton"}:
             item["city"] = "Los Angeles"
     return data
+
+
+def get_city_by_date(data: Dict[str, Any], city: str) -> List[Dict[str, Any]]:
+    date_rows: List[str] = []
+    for row in data:
+        if row["city"].lower() != city.lower():
+            continue
+        date_rows.append(row["date"])
+    date_counter = Counter(date_rows)
+    rows = []
+    for row_date, row_count in dict(date_counter).items():
+        rows.append({"Date": row_date, "Num Incidents": row_count})
+    return sorted(rows, key=lambda x: x["Date"])
+
+
+def write_output_file_for_dates(final_dict: List[Dict[str, Any]], city: str) -> None:
+    filename = f"incidents_{city.lower()}_incidents_by_date.csv"
+
+    print(f"Writing results to {filename}")
+
+    with open(filename, "w") as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=["Date", "Num Incidents"],)
+        writer.writeheader()
+        for row in final_dict:
+            writer.writerow(row)
 
 
 def write_output_file(final_dict: List[Dict[str, Any]], num_incidents: int, min_population: int) -> None:
@@ -115,7 +141,7 @@ def build_final_output(
     return sorted(output_list, key=lambda x: x["Incidents"], reverse=True)
 
 
-def main(min_incidents: int, min_population: int) -> None:
+def main(min_incidents: int, min_population: int, city: str) -> None:
     incidents = get_incidents()
 
     print(f"Found {len(incidents)} total incidents.")
@@ -127,8 +153,11 @@ def main(min_incidents: int, min_population: int) -> None:
 
     write_output_file(final_dict, min_incidents, min_population)
 
+    city_dict = get_city_by_date(incidents, city)
+    write_output_file_for_dates(city_dict, city)
+
 
 if __name__ == "__main__":
     parser = init_argparse()
     args = parser.parse_args()
-    main(args.min_incidents, args.min_population)
+    main(args.min_incidents, args.min_population, args.city)
