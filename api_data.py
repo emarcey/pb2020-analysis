@@ -67,7 +67,7 @@ def write_output_file_for_dates(final_dict: List[Dict[str, Any]], city: str) -> 
     print(f"Writing results to {filename}")
 
     with open(filename, "w") as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=["Date", "Num Incidents"],)
+        writer = csv.DictWriter(csvfile, fieldnames=["Date", "Num Incidents"])
         writer.writeheader()
         for row in final_dict:
             writer.writerow(row)
@@ -80,23 +80,14 @@ def write_output_file(final_dict: List[Dict[str, Any]], num_incidents: int, min_
 
     with open(filename, "w") as csvfile:
         writer = csv.DictWriter(
-            csvfile,
-            fieldnames=[
-                "State",
-                "City",
-                "Incidents",
-                "Population",
-                "Metro Population",
-                "Incidents per 100k residents",
-                "Incidents per 100k metro residents",
-            ],
+            csvfile, fieldnames=["State", "City", "Incidents", "Population", "Incidents per 100k residents",],
         )
         writer.writeheader()
         for row in final_dict:
             writer.writerow(row)
 
 
-def get_cities_by_pop() -> Dict[str, Tuple[int, int]]:
+def get_cities_by_pop() -> Dict[str, int]:
     city_pop_dict: Dict[str, Tuple[int, int]] = {}
     i = 0
     with open(CITY_POP_FILE) as citypopcsv:
@@ -105,13 +96,13 @@ def get_cities_by_pop() -> Dict[str, Tuple[int, int]]:
             if i == 0:
                 i += 1
                 continue
-            city_pop_dict[make_city_state_key(row[0], row[1])] = (int(row[2]), int(row[3]))
+            city_pop_dict[make_city_state_key(row[0], row[1])] = int(row[2])
 
     return city_pop_dict
 
 
 def build_final_output(
-    incident_counter: Counter, city_pop_dict: Dict[str, Tuple[int, int]], min_incidents: int, min_population: int
+    incident_counter: Counter, city_pop_dict: Dict[str, int], min_incidents: int, min_population: int
 ) -> List[Dict[str, Any]]:
     output_list = []
     i = 0
@@ -123,7 +114,7 @@ def build_final_output(
     for city_state_key, num_incidents in dict(incident_counter).items():
         if "Unknown" in city_state_key or num_incidents < min_incidents:
             continue
-        city_population, city_metro_population = city_pop_dict[city_state_key]
+        city_population = city_pop_dict[city_state_key]
         city, state = get_city_state_from_key(city_state_key)
         if city_population < min_population:
             continue
@@ -133,9 +124,7 @@ def build_final_output(
                 "State": state,
                 "Incidents": num_incidents,
                 "Population": city_population,
-                "Metro Population": city_metro_population,
                 "Incidents per 100k residents": round(num_incidents / (city_population / 100000), 5),
-                "Incidents per 100k metro residents": round(num_incidents / (city_metro_population / 100000), 5),
             }
         )
     return sorted(output_list, key=lambda x: x["Incidents"], reverse=True)

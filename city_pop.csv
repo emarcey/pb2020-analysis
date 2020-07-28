@@ -1,35 +1,52 @@
-state,city,population,metro_population
-Oregon,Portland,653115,2478810
-Minnesota,Minneapolis,425403,3629190
-Virginia,Richmond,227032,1263617
-Washington DC,DC,705749,6216589
-Washington,Seattle,744955,3979845
-Colorado,Denver,619968,2932415
-Ohio,Columbus,892533,2078725
-Kentucky,Louisville,766757,1265108
-Texas,Austin,964254,2227083
-California,Los Angeles,3990000,13131431
-Pennsylvania,Philadelphia,1584000,6096120
-New York,New York City,8399000,20399000
-Illinois,Chicago,2706000,9533040
-Iowa,Des Moines,216853,655409
-Arizona,Phoenix,1660000,4857962
-California,San Jose,1003000,1998463
-Indiana,Fort Wayne,267633,419453
-Michigan,Detroit,672662,4292060
-Florida,Tampa,392890,3068511
-North Carolina,Raleigh,469298,1210000
-Nevada,Las Vegas,644644,2227053
-Alabama,Huntsville,197318,462693
-Texas,Dallas,1345000,7233323
-Florida,Orlando,285713,2509454
-Missouri,Kansas City,491918,2143651
-Georgia,Atlanta,498044,6020864
-Ohio,Cincinnati,302605,2137406
-Tennessee,Murfreesboro,146900,350000
-California,San Diego,1426000,3317749
-Pennsylvania,Pittsburgh,301048,2362453
-Massachusetts,Worcester,185877,923672
-Utah,Salt Lake City,200591,1222540
-Texas,Houston,2326000,6997384
-Tennessee,Nashville,692587,1959495
+state,city,population
+Alabama,Huntsville,197318
+Arizona,Phoenix,1660000
+California,Los Angeles,3990000
+California,Oakland,429082
+California,Sacramento,508529
+California,San Diego,1426000
+California,San Jose,1003000
+California,Walnut Creek,69825
+Colorado,Denver,619968
+Connecticut,Waterbury,108093
+Florida,Fort Lauderdale,182595
+Florida,Miami,470914
+Florida,Orlando,285713
+Florida,Tampa,392890
+Georgia,Atlanta,498044
+Illinois,Chicago,2706000
+Indiana,Fort Wayne,267633
+Indiana,Indianapolis,876862
+Iowa,Des Moines,216853
+Kentucky,Louisville,766757
+Massachusetts,Worcester,185877
+Michigan,Detroit,672662
+Michigan,Grand Rapids,200217
+Minnesota,Minneapolis,425403
+Missouri,Florissant,51272
+Missouri,Kansas City,491918
+Nebraska,Omaha,468262
+Nevada,Las Vegas,644644
+New York,Buffalo,256304
+New York,New York City,8399000
+North Carolina,Asheville,92452
+North Carolina,Charlotte,872498
+North Carolina,Raleigh,469298
+Ohio,Cincinnati,302605
+Ohio,Cleveland,383793
+Ohio,Columbus,892533
+Oklahoma,Oklahoma City,649021
+Oregon,Eugene,171245
+Oregon,Portland,653115
+Pennsylvania,Philadelphia,1584000
+Pennsylvania,Pittsburgh,301048
+South Carolina,Charleston,136208
+Tennessee,Murfreesboro,146900
+Tennessee,Nashville,692587
+Texas,Austin,964254
+Texas,Dallas,1345000
+Texas,Houston,2326000
+Utah,Salt Lake City,200591
+Virginia,Richmond,227032
+Washington DC,DC,705749
+Washington,Seattle,744955

@@ -1,16 +1,16 @@
-State,City,Incidents,Population,Metro Population,Incidents per 100k residents,Incidents per 100k metro residents
-Oregon,Portland,156,653115,2478810,23.88553,6.29334
-New York,New York City,94,8399000,20399000,1.11918,0.46081
-California,Los Angeles,39,3990000,13131431,0.97744,0.297
-Washington,Seattle,29,744955,3979845,3.89285,0.72867
-Washington DC,DC,27,705749,6216589,3.82572,0.43432
-Minnesota,Minneapolis,27,425403,3629190,6.34692,0.74397
-Colorado,Denver,23,619968,2932415,3.70987,0.78434
-Ohio,Columbus,22,892533,2078725,2.46489,1.05834
-Illinois,Chicago,20,2706000,9533040,0.7391,0.2098
-Kentucky,Louisville,18,766757,1265108,2.34755,1.4228
-Texas,Austin,15,964254,2227083,1.55561,0.67353
-Virginia,Richmond,13,227032,1263617,5.72607,1.02879
-Pennsylvania,Philadelphia,12,1584000,6096120,0.75758,0.19685
-Iowa,Des Moines,12,216853,655409,5.5337,1.83092
-Michigan,Detroit,11,672662,4292060,1.63529,0.25629
+State,City,Incidents,Population,Incidents per 100k residents
+Oregon,Portland,188,653115,28.78513
+New York,New York City,97,8399000,1.1549
+Washington,Seattle,52,744955,6.98029
+California,Los Angeles,40,3990000,1.00251
+Minnesota,Minneapolis,27,425403,6.34692
+Washington DC,DC,27,705749,3.82572
+Colorado,Denver,24,619968,3.87117
+Ohio,Columbus,22,892533,2.46489
+Illinois,Chicago,20,2706000,0.7391
+Kentucky,Louisville,18,766757,2.34755
+Virginia,Richmond,18,227032,7.9284
+Texas,Austin,15,964254,1.55561
+Pennsylvania,Philadelphia,12,1584000,0.75758
+Iowa,Des Moines,12,216853,5.5337
+Michigan,Detroit,11,672662,1.63529
