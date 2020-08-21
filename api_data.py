@@ -42,10 +42,17 @@ def get_incidents() -> Dict[str, Any]:
     resp = requests.get(API_URL, headers={"Cache-Control": "no-cache"})
     data = resp.json()["data"]
 
+    o_data = []
+
     for item in data:
         if item["city"] in {"Hollywood", "Compton"}:
             item["city"] = "Los Angeles"
-    return data
+
+        if "non-protest" in item.get("tags", []):
+            print(f"Skipping non protest indicident {item['id']}")
+            continue
+        o_data.append(item)
+    return o_data
 
 
 def get_city_by_date(data: Dict[str, Any], city: str) -> List[Dict[str, Any]]:
