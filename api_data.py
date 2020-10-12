@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import argparse
 import csv
 from collections import Counter
@@ -80,6 +81,18 @@ def write_output_file_for_dates(final_dict: List[Dict[str, Any]], city: str) -> 
             writer.writerow(row)
 
 
+def write_output_file_for_tear_gas_dates(final_dict: List[Dict[str, Any]]) -> None:
+    filename = f"tear_gas_incidents_by_date.csv"
+
+    print(f"Writing results to {filename}")
+
+    with open(filename, "w") as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=["Date", "Num Incidents With Tear Gas"])
+        writer.writeheader()
+        for row in final_dict:
+            writer.writerow(row)
+
+
 def write_output_file(final_dict: List[Dict[str, Any]], num_incidents: int, min_population: int) -> None:
     filename = f"incidents_per_100k_min_{num_incidents}_incidents_min_{min_population}_pop.csv"
 
@@ -106,6 +119,14 @@ def get_cities_by_pop() -> Dict[str, int]:
             city_pop_dict[make_city_state_key(row[0], row[1])] = int(row[2])
 
     return city_pop_dict
+
+
+def make_date_range(start_date: datetime, end_date: datetime) -> Dict[datetime, int]:
+    delta = end_date - start_date
+    all_days: Dict[datetime, int] = {}
+    for i in range(delta.days + 1):
+        all_days[start_date + timedelta(days=i)] = 0
+    return all_days
 
 
 def build_final_output(
@@ -137,6 +158,33 @@ def build_final_output(
     return sorted(output_list, key=lambda x: x["Incidents"], reverse=True)
 
 
+def make_date_output(date_range: Dict[datetime, int], incidents: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    for incident in incidents:
+        if incident["date"] == "":
+            continue
+        incident_date = datetime.strptime(incident["date"], "%Y-%m-%d")
+        if incident_date not in date_range:
+            continue
+        if "tear-gas" in incident["tags"]:
+            date_range[incident_date] += 1
+
+    num_with_tear_gas = 0
+    num_without_tear_gas = 0
+    rows: List[Tuple[str, int]] = []
+    for dt, num_tear_gas in date_range.items():
+        if num_tear_gas > 0:
+            num_with_tear_gas += 1
+        else:
+            num_without_tear_gas += 1
+
+        rows.append({"Date": dt.strftime("%Y-%m-%d"), "Num Incidents With Tear Gas": num_tear_gas})
+
+    print(f"Num With Tear Gas: {num_with_tear_gas}")
+    print(f"Num Without Tear Gas: {num_without_tear_gas}")
+
+    return sorted(rows, key=lambda x: x["Date"])
+
+
 def main(min_incidents: int, min_population: int, city: str) -> None:
     incidents = get_incidents()
 
@@ -151,6 +199,13 @@ def main(min_incidents: int, min_population: int, city: str) -> None:
 
     city_dict = get_city_by_date(incidents, city)
     write_output_file_for_dates(city_dict, city)
+
+    start_date = datetime(2020, 5, 28, 0, 0, 0)
+    end_date = datetime.now()
+
+    all_dates = make_date_range(start_date, end_date)
+    date_output = make_date_output(all_dates, incidents)
+    write_output_file_for_tear_gas_dates(date_output)
 
 
 if __name__ == "__main__":
