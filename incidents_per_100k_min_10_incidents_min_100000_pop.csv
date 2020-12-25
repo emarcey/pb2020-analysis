@@ -1,17 +1,18 @@
 State,City,Incidents,Population,Incidents per 100k residents
-Oregon,Portland,379,653115,58.0296
-New York,New York City,105,8399000,1.25015
-Washington,Seattle,73,744955,9.79925
-California,Los Angeles,53,3990000,1.32832
-Washington DC,DC,38,705749,5.38435
-Minnesota,Minneapolis,30,425403,7.05214
+Oregon,Portland,401,653115,61.39807
+New York,New York City,111,8399000,1.32159
+Washington,Seattle,77,744955,10.33619
+California,Los Angeles,58,3990000,1.45363
+Washington DC,DC,52,705749,7.36806
+Minnesota,Minneapolis,36,425403,8.46256
 Kentucky,Louisville,29,766757,3.78216
+Colorado,Denver,29,619968,4.67766
 Illinois,Chicago,28,2706000,1.03474
-Colorado,Denver,27,619968,4.35506
 Virginia,Richmond,24,227032,10.5712
-Ohio,Columbus,23,892533,2.57694
+Ohio,Columbus,22,892533,2.46489
+Pennsylvania,Philadelphia,20,1584000,1.26263
 Texas,Austin,19,964254,1.97044
-Pennsylvania,Philadelphia,14,1584000,0.88384
-Michigan,Detroit,13,672662,1.93262
+Michigan,Detroit,14,672662,2.08128
 Iowa,Des Moines,12,216853,5.5337
+Massachusetts,Boston,11,694583,1.58368
 California,San Jose,10,1003000,0.99701

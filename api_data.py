@@ -44,7 +44,8 @@ def get_incidents() -> Dict[str, Any]:
     data = resp.json()["data"]
 
     o_data = []
-
+    geos = 0
+    print(len(data))
     for item in data:
         if item["city"] in {"Hollywood", "Compton"}:
             item["city"] = "Los Angeles"
@@ -52,7 +53,12 @@ def get_incidents() -> Dict[str, Any]:
         if "non-protest" in item.get("tags", []):
             print(f"Skipping non protest indicident {item['id']}")
             continue
+
+        if item.get("geolocation", None):
+            geos += 1
         o_data.append(item)
+
+    print(f"Num Geos: {geos}")
     return o_data
 
 
@@ -100,7 +106,14 @@ def write_output_file(final_dict: List[Dict[str, Any]], num_incidents: int, min_
 
     with open(filename, "w") as csvfile:
         writer = csv.DictWriter(
-            csvfile, fieldnames=["State", "City", "Incidents", "Population", "Incidents per 100k residents",],
+            csvfile,
+            fieldnames=[
+                "State",
+                "City",
+                "Incidents",
+                "Population",
+                "Incidents per 100k residents",
+            ],
         )
         writer.writeheader()
         for row in final_dict:
